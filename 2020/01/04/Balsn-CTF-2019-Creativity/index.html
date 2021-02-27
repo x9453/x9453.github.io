@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Balsn CTF 2019 - Creativity"/><meta name="keywords" content="ctf, smart contract, shw's Blog" /><link rel="alternate" href="/default" title="shw's Blog" ><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="https://x9453.github.io/2020/01/04/Balsn-CTF-2019-Creativity/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Balsn CTF 2019 - Creativity - shw's Blog</title>
+  <meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">shw's Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">shw's Blog</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Balsn CTF 2019 - Creativity
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-01-04
+        </span></div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Challenge"><span class="toc-text">Challenge</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Description"><span class="toc-text">Description</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution"><span class="toc-text">Solution</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Detailed-Write-up"><span class="toc-text">Detailed Write-up</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-CREATE2-Trick"><span class="toc-text">The CREATE2 Trick</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc"><span class="toc-text">Misc</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h1 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h1><p><code>Creativity</code> is one of my two smart contract challenges for <a target="_blank" rel="noopener" href="https://github.com/balsn/balsn-ctf-2019">Balsn CTF 2019</a>. You may find the source files <a target="_blank" rel="noopener" href="https://github.com/x9453/balsn-ctf-2019">here</a>.</p>
+<ul>
+<li>Type: Smart contract</li>
+<li>Solves: 1/720</li>
+</ul>
+<h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><blockquote>
+<p>Be concise, or be creative.</p>
+</blockquote>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>In this challenge, our goal is to emit the <code>SendFlag</code> event. According to the <a target="_blank" rel="noopener" href="https://ethereum-magicians.org/t/potential-security-implications-of-create2-eip-1014/2614">CREATE2 reinit trick</a>, we can deploy a contract that passes the <code>check()</code>, self-destruct it, and then deploy a new contract at the same address with different code. Let our new contract emit the <code>SendFlag</code> event, which will be executed by the delegatecall from the game contract when <code>execute()</code> is called.</p>
+<a id="more"></a>
+
+<h2 id="Detailed-Write-up"><a href="#Detailed-Write-up" class="headerlink" title="Detailed Write-up"></a>Detailed Write-up</h2><p>We are provided with the game contract source:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^<span class="number">0.5</span><span class="number">.10</span>;</span><br><span class="line"></span><br><span class="line">contract Creativity &#123;</span><br><span class="line">    event SendFlag(address addr);</span><br><span class="line"></span><br><span class="line">    address public target;</span><br><span class="line">    uint randomNumber = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">check</span>(<span class="params">address _addr</span>) <span class="title">public</span> </span>&#123;</span><br><span class="line">        uint size;</span><br><span class="line">        assembly &#123; <span class="attr">size</span> := extcodesize(_addr) &#125;</span><br><span class="line">        <span class="built_in">require</span>(size &gt; <span class="number">0</span> &amp;&amp; size &lt;= <span class="number">4</span>);</span><br><span class="line">        target = _addr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">execute</span>(<span class="params"></span>) <span class="title">public</span> </span>&#123;</span><br><span class="line">        <span class="built_in">require</span>(target != address(<span class="number">0</span>));</span><br><span class="line">        target.delegatecall(abi.encodeWithSignature(<span class="string">&quot;&quot;</span>));</span><br><span class="line">        selfdestruct(address(<span class="number">0</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">sendFlag</span>(<span class="params"></span>) <span class="title">public</span> <span class="title">payable</span> </span>&#123;</span><br><span class="line">        <span class="built_in">require</span>(msg.value &gt;= <span class="number">100000000</span> ether);</span><br><span class="line">        emit SendFlag(msg.sender);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Unfortunately, we don’t have that much ether to call <code>sendFlag</code> directly, so let’s first try to follow the logic of the game contract:</p>
+<ol>
+<li>Deploy a contract with its code size not more than 4 bytes.</li>
+<li>Call <code>check()</code> with the address of the deployed contract as the parameter.</li>
+<li>Call <code>execute()</code> to let the game contract make a <a target="_blank" rel="noopener" href="https://solidity.readthedocs.io/en/v0.5.12/introduction-to-smart-contracts.html#delegatecall-callcode-and-libraries">delegatecall</a> to our deployed contract.</li>
+</ol>
+<p>The biggest problem is: How can we emit the <code>SendFlag</code> event by executing at most 4 bytes of EVM bytecode? The short answer is no, we can’t. Or at least in the <a target="_blank" rel="noopener" href="https://blog.ethereum.org/2019/02/22/ethereum-constantinople-st-petersburg-upgrade-announcement/">Constantinople hard-fork</a>, the latest release of Ethereum when the CTF is held in Oct 2019.</p>
+<p>In short, the reasons are:</p>
+<ol>
+<li>Directly emit an event with <code>LOG1</code> requires an event topic hash as a parameter, which is more than 4 bytes. (<a target="_blank" rel="noopener" href="https://solidity.readthedocs.io/en/v0.5.12/contracts.html#low-level-interface-to-logs">Ref</a>)</li>
+<li>To invoke any type of call to another contract, at least 6 parameters should be prepared on the stack, which requires at least 6 operations and thus 6 bytes of code. (<a target="_blank" rel="noopener" href="https://ethervm.io/">Ref</a>)</li>
+<li>Modifying the storage of the game contract is useless since there is a selfdestruct right after the delegatecall.</li>
+</ol>
+<h3 id="The-CREATE2-Trick"><a href="#The-CREATE2-Trick" class="headerlink" title="The CREATE2 Trick"></a>The CREATE2 Trick</h3><p>The <code>CREATE2</code> opcode proposed in <a target="_blank" rel="noopener" href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1014.md">EIP-1014</a> behaves identically the same as <code>CREATE</code>, except the calculated address for the deployed contract. This <a target="_blank" rel="noopener" href="https://ethereum-magicians.org/t/potential-security-implications-of-create2-eip-1014/2614">discussion thread</a> points out a critical security issue of <code>CREATE2</code>, the so-called <code>CREATE2</code> reinit trick, which allows a contract to change in-place after being deployed. You may find a detailed explanation in the link above.</p>
+<p>Here is a simple PoC of the <code>CREATE2</code> reinit trick (re-written from <a target="_blank" rel="noopener" href="https://ropsten.etherscan.io/address/0xb3ecef15f61572129089a9704b33d53f56991df8#code">this contract</a>). All contracts deployed by <code>deploy(code)</code> through <code>Deployer</code> will be deployed at the same address. However, the code of these contracts can be different.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^<span class="number">0.5</span><span class="number">.10</span>;</span><br><span class="line"></span><br><span class="line">contract Deployer &#123;</span><br><span class="line">    bytes public deployBytecode;</span><br><span class="line">    address public deployedAddr;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">deploy</span>(<span class="params">bytes memory code</span>) <span class="title">public</span> </span>&#123;</span><br><span class="line">        deployBytecode = code;</span><br><span class="line">        address a;</span><br><span class="line">        <span class="comment">// Compile Dumper to get this bytecode</span></span><br><span class="line">        bytes memory dumperBytecode = hex<span class="string">&#x27;6080604052348015600f57600080fd5b50600033905060608173ffffffffffffffffffffffffffffffffffffffff166331d191666040518163ffffffff1660e01b815260040160006040518083038186803b158015605c57600080fd5b505afa158015606f573d6000803e3d6000fd5b505050506040513d6000823e3d601f19601f820116820180604052506020811015609857600080fd5b81019080805164010000000081111560af57600080fd5b8281019050602081018481111560c457600080fd5b815185600182028301116401000000008211171560e057600080fd5b50509291905050509050805160208201f3fe&#x27;</span>;</span><br><span class="line">        assembly &#123;</span><br><span class="line">            a := create2(callvalue, add(<span class="number">0x20</span>, dumperBytecode), mload(dumperBytecode), <span class="number">0x9453</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        deployedAddr = a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">contract Dumper &#123;</span><br><span class="line">    <span class="title">constructor</span>(<span class="params"></span>) <span class="title">public</span> &#123;</span><br><span class="line">        Deployer dp = Deployer(msg.sender);</span><br><span class="line">        bytes memory bytecode = dp.deployBytecode();</span><br><span class="line">        assembly &#123;</span><br><span class="line">            <span class="keyword">return</span> (add(bytecode, <span class="number">0x20</span>), mload(bytecode))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>To solve this challenge, this is our plan:</p>
+<ol>
+<li>Using the <code>CREATE2</code> reinit trick, deploy a contract with content <code>0x33ff</code>, which is <code>selfdestruct(msg.sender)</code>.</li>
+<li>Call <code>check()</code> in the game contract to let our deployed contract pass the check.</li>
+<li>Send an empty transaction to our contract to make it self-destructed.</li>
+<li>Again, using the <code>CREATE2</code> reinit trick, deploy a new contract at the same address that will execute <code>emit SendFlag(0)</code>.</li>
+<li>Call <code>execute()</code>in the game contract, it will then fire the <code>SendFlag</code> event.</li>
+</ol>
+<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><p>Congrats to @Sissel for being the only person who solved my two challenges during the CTF! I hope all of you enjoy this challenge and Balsn CTF.</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="https://x9453.github.io">shw</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="https://x9453.github.io/2020/01/04/Balsn-CTF-2019-Creativity/">https://x9453.github.io/2020/01/04/Balsn-CTF-2019-Creativity/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/ctf/">ctf</a>
+            <a href="/tags/smart-contract/">smart contract</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2020/01/16/Balsn-CTF-2019-Bank/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Balsn CTF 2019 - Bank</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:shw.ctf@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a target="_blank" rel="noopener" href="https://github.com/x9453" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2020 - 2021<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">shw</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

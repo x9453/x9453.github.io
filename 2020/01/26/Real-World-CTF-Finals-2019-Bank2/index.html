@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Real World CTF Finals 2019 - Bank2"/><meta name="keywords" content="ctf, crypto, shw's Blog" /><link rel="alternate" href="/default" title="shw's Blog" ><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="https://x9453.github.io/2020/01/26/Real-World-CTF-Finals-2019-Bank2/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Real World CTF Finals 2019 - Bank2 - shw's Blog</title>
+  <meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">shw's Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">shw's Blog</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Real World CTF Finals 2019 - Bank2
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-01-26
+        </span></div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Challenge"><span class="toc-text">Challenge</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Description"><span class="toc-text">Description</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution"><span class="toc-text">Solution</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Detailed-Write-up"><span class="toc-text">Detailed Write-up</span></a></li></ol></li></ol>
+    </div>
+  </div><div class="post-content"><h1 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h1><ul>
+<li>Type: Crypto</li>
+<li>Keywords: Schnorr signature algorithm</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/x9453/ctf-write-ups/tree/master/real-world-ctf-final-2019/Bank2/">Source files &amp; exploit</a></li>
+</ul>
+<h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><blockquote>
+<p>Our bank has invested in a HUGE security upgrade. Now we are equipped with the latest interactive multi-signature protocol to keep your assets safe. Your satisfaction is our first priority.</p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="Detailed-Write-up"><a href="#Detailed-Write-up" class="headerlink" title="Detailed Write-up"></a>Detailed Write-up</h2><p>Similar to the challenge <code>Bank</code> in Real World CTF 2019 Quals (<a target="_blank" rel="noopener" href="https://ctftime.org/task/9225">Ref</a>), the server-side implements the Schnorr signature algorithm. The difference between these two implementations is the verifying function:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cosi_verify</span>(<span class="params">c, s, pk, m</span>):</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">not</span> on_curve(pk)):</span><br><span class="line">        print(<span class="string">&#x27;Not on curve&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    cPrime = sha256(bytes_point(point_add(point_mul(G, s), point_mul(pk, n-c))) + m)</span><br><span class="line">    <span class="keyword">if</span> cPrime == c:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>The main logic of the server’s code is:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># generate server&#x27;s public-private key pair</span></span><br><span class="line">sk, pk = generate_keys()</span><br><span class="line">print(<span class="string">&#x27;sk, pk =&#x27;</span>, sk, pk)</span><br><span class="line">...</span><br><span class="line"><span class="keyword">if</span> msg[<span class="number">0</span>] == <span class="string">&#x27;0&#x27;</span>: <span class="comment"># withdraw</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> cosi_verify(C, S, pk, <span class="string">&#x27;WITHDRAW&#x27;</span>):</span><br><span class="line">        req.sendall(<span class="string">&quot;Here is your coin: %s\n&quot;</span> % FLAG)</span><br><span class="line"><span class="keyword">if</span> msg[<span class="number">0</span>] == <span class="string">&#x27;1&#x27;</span>: <span class="comment"># deposit</span></span><br><span class="line">    r = p - Random.random.randint(<span class="number">5</span>, p/<span class="number">2</span>**<span class="number">16</span>)</span><br><span class="line">    req.sendall(<span class="string">&quot;%s\n&quot;</span> % <span class="built_in">repr</span>((point_mul(G, r), pk)))</span><br><span class="line">    ...</span><br><span class="line">    c = sha256(bytes_point(T) + <span class="string">&#x27;DEPOSIT&#x27;</span>)</span><br><span class="line">    s = r + c * sk</span><br><span class="line">    req.sendall(<span class="string">&quot;%s\n&quot;</span> % <span class="built_in">repr</span>(s))</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> cosi_verify(C, S, PK, <span class="string">&#x27;DEPOSIT&#x27;</span>):</span><br><span class="line">        balance += <span class="number">100</span></span><br><span class="line">        req.sendall(<span class="string">&#x27;Coin Deposited&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>In the deposit method, <code>T</code> and <code>PK</code> are provided by us. The bug happens at line 14, it should be <code>s = (r + c * sk) % n</code> instead (credit to <a target="_blank" rel="noopener" href="https://github.com/b04902036">@fweasd</a>). Notice that the <code>s</code> we received equals to <code>p - r&#39; + c * sk</code>, where <code>r&#39;</code> is around 240 bits. Since we know the value of <code>p, c</code>, we can calculate the value of <code>sk = (s - p)//c + 1</code>, which is the secret key of the server. Then, we sign the message <code>&quot;WITHDRAW&quot;</code> with the secret key and get the flag by the withdraw method.</p>
+<p>Exploit:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">G = ... <span class="comment"># base point</span></span><br><span class="line">n = ... <span class="comment"># order of the group</span></span><br><span class="line">p = ... <span class="comment"># mod p</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sign</span>(<span class="params">sk, msg</span>):</span></span><br><span class="line">    rn = <span class="number">0x9453</span></span><br><span class="line">    T = point_mul(G, rn)</span><br><span class="line">    c = sha256(bytes_point(T) + msg)</span><br><span class="line">    s = (rn + c * sk) % n</span><br><span class="line">    <span class="keyword">return</span> c, s, T</span><br><span class="line"></span><br><span class="line">r = remote(host, port)</span><br><span class="line">sk, pk = generate_keys()</span><br><span class="line">c, s, T = sign(sk, <span class="string">&#x27;DEPOSIT&#x27;</span>)</span><br><span class="line">server_s = deposit(r, (T, pk), (c, s))</span><br><span class="line"></span><br><span class="line">server_sk = (server_s - p) // c + <span class="number">1</span></span><br><span class="line">c, s, _ = sign(server_sk, <span class="string">&#x27;WITHDRAW&#x27;</span>)</span><br><span class="line">withdraw(r, (c, s))</span><br><span class="line"></span><br><span class="line"><span class="comment"># rwctf&#123;2r0unD_Schn0Rr_1s_N07_5AfE._cHEck_tH3_0ak1aNDl9_p4p3r&#125;</span></span><br></pre></td></tr></table></figure>
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="https://x9453.github.io">shw</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="https://x9453.github.io/2020/01/26/Real-World-CTF-Finals-2019-Bank2/">https://x9453.github.io/2020/01/26/Real-World-CTF-Finals-2019-Bank2/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/ctf/">ctf</a>
+            <a href="/tags/crypto/">crypto</a>
+            </div>
+        
+        <nav class="post-nav"><a class="prev" href="/2020/01/26/Real-World-CTF-Finals-2019-Montagy/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Real World CTF Finals 2019 - Montagy</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    <a class="next" href="/2020/01/16/Balsn-CTF-2019-Bank/">
+        <span class="next-text nav-default">Balsn CTF 2019 - Bank</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:shw.ctf@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a target="_blank" rel="noopener" href="https://github.com/x9453" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2020 - 2021<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">shw</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>
