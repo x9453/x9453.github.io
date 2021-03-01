@@ -79,6 +79,31 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2021/02/27/Balsn-CTF-2020-Election/">Balsn CTF 2020 - Election</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-02-27
+        </span></div>
+    </header>
+
+    <div class="post-content"><h1 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h1><p>For Balsn CTF 2020 online, I also created two smart-contract challenges, <code>Election</code> and <code>IdleGame</code>. The source files of them are available on <a target="_blank" rel="noopener" href="https://github.com/x9453/my-ctf-challenges">GitHub - x9453/my-ctf-challenges</a>. Here is a walkthrough of the challenge <code>Election</code>.</p>
+<ul>
+<li>Type: Smart contract</li>
+<li>Solves: 5/490</li>
+<li>Keywords: ERC223, Reentrancy, ABI encoding, Integer overflow</li>
+</ul>
+<h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><blockquote>
+<p>Balsn is holding the first Shaman King election. Who will be the winner?</p>
+</blockquote>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>In this challenge, our goal is to set the variable <code>sendFlag</code> to <code>True</code>. By exploiting the <code>customFallback</code> parameter of the <code>_transfer</code> function of the extended ERC223 interface, we can reenter the <code>Election</code> contract with the <code>auth</code> modifier check bypassed to call the functions <code>propose</code> and <code>_setStage</code> (with some restrictions on the ABI encoding format). After proposing ourselves as a candidate, exploit the integer overflow in the <code>reveal</code> function when counting the total of votes to become the winner of the election.</p>
+          <div class="read-more">
+            <a href="/2021/02/27/Balsn-CTF-2020-Election/" class="read-more-link">Read more..</a>
+          </div>
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2020/01/26/Real-World-CTF-Finals-2019-Montagy/">Real World CTF Finals 2019 - Montagy</a>
         </h1>
 
