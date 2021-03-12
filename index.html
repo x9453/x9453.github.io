@@ -79,6 +79,30 @@
         <div class="content-wrapper">
           <div id="content" class="content"><section id="posts" class="posts"><article class="post">
     <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2021/03/12/Balsn-CTF-2020-IdleGame/">Balsn CTF 2020 - IdleGame</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-03-12
+        </span></div>
+    </header>
+
+    <div class="post-content"><h1 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h1><p>For Balsn CTF 2020 online, I also created two smart-contract challenges, <code>Election</code> and <code>IdleGame</code>. The source files of them are available on <a target="_blank" rel="noopener" href="https://github.com/x9453/my-ctf-challenges">GitHub - x9453/my-ctf-challenges</a>. Here is a walkthrough of the challenge <code>IdleGame</code>.</p>
+<ul>
+<li>Type: Smart contract</li>
+<li>Solves: 4/490</li>
+<li>Keywords: Continuous token, Flash-mintable token, Arbitrage, DeFi attack</li>
+</ul>
+<h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><blockquote>
+<p>Thinking about making money by playing games? Try the first idle game on the blockchain!</p>
+</blockquote>
+          <div class="read-more">
+            <a href="/2021/03/12/Balsn-CTF-2020-IdleGame/" class="read-more-link">Read more..</a>
+          </div>
+        </div></article>
+      <article class="post">
+    <header class="post-header">
       <h1 class="post-title"><a class="post-link" href="/2021/02/27/Balsn-CTF-2020-Election/">Balsn CTF 2020 - Election</a>
         </h1>
 
@@ -174,32 +198,11 @@
             <a href="/2020/01/16/Balsn-CTF-2019-Bank/" class="read-more-link">Read more..</a>
           </div>
         </div></article>
-      <article class="post">
-    <header class="post-header">
-      <h1 class="post-title"><a class="post-link" href="/2020/01/04/Balsn-CTF-2019-Creativity/">Balsn CTF 2019 - Creativity</a>
-        </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2020-01-04
-        </span></div>
-    </header>
-
-    <div class="post-content"><h1 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h1><p><code>Creativity</code> is one of my two smart contract challenges for <a target="_blank" rel="noopener" href="https://github.com/balsn/balsn-ctf-2019">Balsn CTF 2019</a>. You may find the source files <a target="_blank" rel="noopener" href="https://github.com/x9453/balsn-ctf-2019">here</a>.</p>
-<ul>
-<li>Type: Smart contract</li>
-<li>Solves: 1/720</li>
-<li>Keywords: CREATE2, CREATE2 reinitialize trick, EVM opcode</li>
-</ul>
-<h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><blockquote>
-<p>Be concise, or be creative.</p>
-</blockquote>
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>In this challenge, our goal is to emit the <code>SendFlag</code> event. According to the <a target="_blank" rel="noopener" href="https://ethereum-magicians.org/t/potential-security-implications-of-create2-eip-1014/2614">CREATE2 reinitialize trick</a>, we can deploy a contract that passes the <code>check()</code>, self-destruct it, and then deploy a new contract at the same address with a different code. Let our new contract emit the <code>SendFlag</code> event, which will be executed by the delegatecall from the game contract when <code>execute()</code> is called.</p>
-          <div class="read-more">
-            <a href="/2020/01/04/Balsn-CTF-2019-Creativity/" class="read-more-link">Read more..</a>
-          </div>
-        </div></article>
-      <nav class="pagination"></nav></section></div></div>
+      <nav class="pagination"><a class="next" href="/page/2/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></section></div></div>
       </main>
 
       <footer id="footer" class="footer"><div class="social-links"><a href="mailto:shw.ctf@gmail.com" class="iconfont icon-email" title="email"></a>

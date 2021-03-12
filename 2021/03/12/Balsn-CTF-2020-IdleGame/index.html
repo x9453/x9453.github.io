@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Balsn CTF 2020 - IdleGame"/><meta name="keywords" content="ctf, smart contract, shw's Blog" /><link rel="alternate" href="/default" title="shw's Blog" ><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="https://x9453.github.io/2021/03/12/Balsn-CTF-2020-IdleGame/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Balsn CTF 2020 - IdleGame - shw's Blog</title>
+  <meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">shw's Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">shw's Blog</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Balsn CTF 2020 - IdleGame
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-03-12
+        </span></div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Challenge"><span class="toc-text">Challenge</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Description"><span class="toc-text">Description</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution"><span class="toc-text">Solution</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Detailed-Write-up"><span class="toc-text">Detailed Write-up</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Overview-of-the-Game-Contract"><span class="toc-text">Overview of the Game Contract</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flash-Mintable-Tokens"><span class="toc-text">Flash-Mintable Tokens</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Continuous-Tokens"><span class="toc-text">Continuous Tokens</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Arbitraging-by-Manipulating-the-Token-Price"><span class="toc-text">Arbitraging by Manipulating the Token Price</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc"><span class="toc-text">Misc</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><h1 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h1><p>For Balsn CTF 2020 online, I also created two smart-contract challenges, <code>Election</code> and <code>IdleGame</code>. The source files of them are available on <a target="_blank" rel="noopener" href="https://github.com/x9453/my-ctf-challenges">GitHub - x9453/my-ctf-challenges</a>. Here is a walkthrough of the challenge <code>IdleGame</code>.</p>
+<ul>
+<li>Type: Smart contract</li>
+<li>Solves: 4/490</li>
+<li>Keywords: Continuous token, Flash-mintable token, Arbitrage, DeFi attack</li>
+</ul>
+<h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><blockquote>
+<p>Thinking about making money by playing games? Try the first idle game on the blockchain!</p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="Detailed-Write-up"><a href="#Detailed-Write-up" class="headerlink" title="Detailed Write-up"></a>Detailed Write-up</h2><h3 id="Overview-of-the-Game-Contract"><a href="#Overview-of-the-Game-Contract" class="headerlink" title="Overview of the Game Contract"></a>Overview of the Game Contract</h3><p>The <code>IdleGame</code> contract is designed as a real idle game, where players wait a specific time to earn <code>IDL</code> tokens and spend them on leveling up. Moreover, players can also buy and sell <code>IDL</code> tokens with <code>BSN</code> tokens. To reach our goal of earning a large number of <code>IDL</code> tokens, playing the game is not enough. We have to exploit the token contract’s two features: flash-mintable and continuous supply.</p>
+<h3 id="Flash-Mintable-Tokens"><a href="#Flash-Mintable-Tokens" class="headerlink" title="Flash-Mintable Tokens"></a>Flash-Mintable Tokens</h3><p><a target="_blank" rel="noopener" href="https://github.com/Austin-Williams/flash-mintable-tokens">Flash-mintable tokens</a> are ERC20-compliant tokens that allow flash-minting. Anyone can mint an arbitrary number of tokens as long as he can burn the same number of tokens at the end of the transaction, or the transaction reverts otherwise. Keep in mind that, with the flash-mintable capability, one can manipulate the total supply of a token to an arbitrarily large value as he desires.</p>
+<h3 id="Continuous-Tokens"><a href="#Continuous-Tokens" class="headerlink" title="Continuous Tokens"></a>Continuous Tokens</h3><p>If you are not familiar with continuous tokens, bounding curves or the Bancor formula, <a target="_blank" rel="noopener" href="https://yos.io/2018/11/10/bonding-curves/">here</a> is an excellent article to start. Recall that the Bancor formula determines the price of a continuous token as follows:</p>
+<p>$ ContinuousTokenPrice = ReserveBalance / (ContinuousTokenSupply \times ReserveRatio) $</p>
+<p>In this challenge, <code>IDL</code> is a continuous token with <code>BSN</code> as its reserve token, and the reserve ratio is 99.9% (<a target="_blank" rel="noopener" href="https://github.com/x9453/my-ctf-challenges/blob/master/balsn-ctf-2020/IdleGame/public/IdleGame.sol#L86">line 86</a>). When buying tokens, both <code>ReserveBalance</code> and <code>ContinuousTokenSupply</code> increase, and so does the <code>ContinuousTokenPrice</code>. Selling tokens, on the other hand, reduce the price.</p>
+<h3 id="Arbitraging-by-Manipulating-the-Token-Price"><a href="#Arbitraging-by-Manipulating-the-Token-Price" class="headerlink" title="Arbitraging by Manipulating the Token Price"></a>Arbitraging by Manipulating the Token Price</h3><p>Now comes the tricky part. How would the price of <code>IDL</code> change if we can directly control its total supply without minting or burning? According to the formula, the token price decreases as the total supply increases and vice versa. By controlling the total supply, we can perform an arbitrage attack.</p>
+<p>First, flash-mint a large number of <code>IDL</code> tokens to raise the total supply and buy them with <code>BSN</code> tokens before the flash-minted tokens are burned. Second, sell all <code>IDL</code> tokens for <code>BSN</code> tokens. Since we buy the <code>IDL</code> tokens at a low price and sell them at a higher price, we get more <code>BSN</code> tokens than before. Repeat the attack multiple times to earn more <code>BSN</code> tokens until we have enough to exchange them to <code>IDL</code> and buy a flag.</p>
+<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><p>This challenge is inspired by the <a target="_blank" rel="noopener" href="https://sampriestley.com/defi-arbs-explained-15m-eminence-attack/">Eminence attack</a>, where the attacker earned 15M USD (but also returned 8M). In this real-world attack, the total supply of the continuous token, <code>EMN</code>, was manipulated by buying and selling <code>eAAVE</code> tokens instead of using the flash-minting feature.</p>
+<p>Thanks to @aaditya_purani and @whysw_p for their fantastic write-ups for this challenge. Hope you all enjoyed it!</p>
+<p>Flag: <code>BALSN&#123;Arb1tr4ge_wi7h_Fl45hMin7&#125;</code></p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="https://x9453.github.io">shw</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="https://x9453.github.io/2021/03/12/Balsn-CTF-2020-IdleGame/">https://x9453.github.io/2021/03/12/Balsn-CTF-2020-IdleGame/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/ctf/">ctf</a>
+            <a href="/tags/smart-contract/">smart contract</a>
+            </div>
+        
+        <nav class="post-nav"><a class="next" href="/2021/02/27/Balsn-CTF-2020-Election/">
+        <span class="next-text nav-default">Balsn CTF 2020 - Election</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:shw.ctf@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a target="_blank" rel="noopener" href="https://github.com/x9453" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2020 - 2021<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">shw</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>

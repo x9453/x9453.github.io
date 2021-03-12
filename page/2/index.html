@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 <link rel="alternate" href="/default" title="shw's Blog" ><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
-<link rel="canonical" href="https://x9453.github.io/archives/2020/"/>
+<link rel="canonical" href="https://x9453.github.io/page/2/"/>
 
 <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
     MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
@@ -26,8 +26,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
 </script>
 
-    <title>Archives - shw's Blog
-  </title>
+    <title>shw's Blog</title>
   <meta name="generator" content="Hexo 5.3.0"></head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -78,55 +77,36 @@
 
       <main id="main" class="main">
         <div class="content-wrapper">
-          <div id="content" class="content"><section id="archive" class="archive"><div class="archive-title">
-          <span class="archive-post-counter">
-            6 Posts In Total
-          </span>
-        </div>
-      <div class="collection-title">
-            <h2 class="archive-year">2020</h2>
+          <div id="content" class="content"><section id="posts" class="posts"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title"><a class="post-link" href="/2020/01/04/Balsn-CTF-2019-Creativity/">Balsn CTF 2019 - Creativity</a>
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2020-01-04
+        </span></div>
+    </header>
+
+    <div class="post-content"><h1 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h1><p><code>Creativity</code> is one of my two smart contract challenges for <a target="_blank" rel="noopener" href="https://github.com/balsn/balsn-ctf-2019">Balsn CTF 2019</a>. You may find the source files <a target="_blank" rel="noopener" href="https://github.com/x9453/balsn-ctf-2019">here</a>.</p>
+<ul>
+<li>Type: Smart contract</li>
+<li>Solves: 1/720</li>
+<li>Keywords: CREATE2, CREATE2 reinitialize trick, EVM opcode</li>
+</ul>
+<h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><blockquote>
+<p>Be concise, or be creative.</p>
+</blockquote>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>In this challenge, our goal is to emit the <code>SendFlag</code> event. According to the <a target="_blank" rel="noopener" href="https://ethereum-magicians.org/t/potential-security-implications-of-create2-eip-1014/2614">CREATE2 reinitialize trick</a>, we can deploy a contract that passes the <code>check()</code>, self-destruct it, and then deploy a new contract at the same address with a different code. Let our new contract emit the <code>SendFlag</code> event, which will be executed by the delegatecall from the game contract when <code>execute()</code> is called.</p>
+          <div class="read-more">
+            <a href="/2020/01/04/Balsn-CTF-2019-Creativity/" class="read-more-link">Read more..</a>
           </div>
-        <div class="archive-post">
-        <span class="archive-post-time">
-          01-26
-          </span>
-        <span class="archive-post-title">
-          <a href="/2020/01/26/Real-World-CTF-Finals-2019-Montagy/" class="archive-post-link">
-            Real World CTF Finals 2019 - Montagy
-          </a>
-        </span>
-      </div>
-    <div class="archive-post">
-        <span class="archive-post-time">
-          01-26
-          </span>
-        <span class="archive-post-title">
-          <a href="/2020/01/26/Real-World-CTF-Finals-2019-Bank2/" class="archive-post-link">
-            Real World CTF Finals 2019 - Bank2
-          </a>
-        </span>
-      </div>
-    <div class="archive-post">
-        <span class="archive-post-time">
-          01-16
-          </span>
-        <span class="archive-post-title">
-          <a href="/2020/01/16/Balsn-CTF-2019-Bank/" class="archive-post-link">
-            Balsn CTF 2019 - Bank
-          </a>
-        </span>
-      </div>
-    <div class="archive-post">
-        <span class="archive-post-time">
-          01-04
-          </span>
-        <span class="archive-post-title">
-          <a href="/2020/01/04/Balsn-CTF-2019-Creativity/" class="archive-post-link">
-            Balsn CTF 2019 - Creativity
-          </a>
-        </span>
-      </div>
-    </section><nav class="pagination"></nav></div></div>
+        </div></article>
+      <nav class="pagination"><a class="prev" href="/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
+      </a>
+    </nav></section></div></div>
       </main>
 
       <footer id="footer" class="footer"><div class="social-links"><a href="mailto:shw.ctf@gmail.com" class="iconfont icon-email" title="email"></a>
