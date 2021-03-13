@@ -121,7 +121,6 @@
 <h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><blockquote>
 <p>Balsn is holding the first Shaman King election. Who will be the winner?</p>
 </blockquote>
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>In this challenge, our goal is to win the election. By exploiting the <code>customFallback</code> parameter of the <code>_transfer</code> function of the extended ERC223 interface, we can reenter the <code>Election</code> contract with the <code>auth</code> modifier check bypassed to call the functions <code>propose</code> and <code>_setStage</code> (with some restrictions on the ABI encoding format). After proposing ourselves as a candidate, exploit the integer overflow in the <code>reveal</code> function when counting the total of votes to become the winner of the election.</p>
           <div class="read-more">
             <a href="/2021/02/27/Balsn-CTF-2020-Election/" class="read-more-link">Read more..</a>
           </div>
@@ -141,7 +140,6 @@
 <li>Type: Smart contract</li>
 <li>Keywords: Solidity assembly, z3</li>
 </ul>
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>By the <code>newPuzzle</code> method, create a new puzzle that has the same tag value as one of the existing puzzles to pass the <code>isOfficialChecksum</code> check. Let our new puzzle call <code>solve</code> to the proxy contract, and the proxy contract will send out all the ether it has.</p>
           <div class="read-more">
             <a href="/2020/01/26/Real-World-CTF-Finals-2019-Montagy/" class="read-more-link">Read more..</a>
           </div>
@@ -188,7 +186,6 @@
 <h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><blockquote>
 <p>Again, as those ctfs did in the past, we also implemented our 100% secure bank system, but on blockchain this time.</p>
 </blockquote>
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>In this challenge, our goal is to emit the <code>SendFlag</code> event. The uninitialized storage pointer <code>info</code> at line 32 allows us to overwrite the length of <code>safeboxes</code> to a large value, making <code>safeboxes</code> overlap with <code>failedLogs</code>. Thus, we can control the <code>callback</code> variable by <code>triedPass</code> in a <code>FailedAttempt</code>, and hijack the program flow to jump directly to the instruction where the <code>SendFlag</code> event is emitted.</p>
           <div class="read-more">
             <a href="/2020/01/16/Balsn-CTF-2019-Bank/" class="read-more-link">Read more..</a>
           </div>
