@@ -91,17 +91,17 @@
     <div class="post-toc" id="post-toc">
     <h2 class="post-toc-title">Contents</h2>
     <div class="post-toc-content">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Challenge"><span class="toc-text">Challenge</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Description"><span class="toc-text">Description</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution"><span class="toc-text">Solution</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Detailed-Write-up"><span class="toc-text">Detailed Write-up</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Overview-of-the-Game-Contract"><span class="toc-text">Overview of the Game Contract</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Abusing-the-Custom-Fallback"><span class="toc-text">Abusing the Custom Fallback</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dealing-with-ABI-Encoding"><span class="toc-text">Dealing with ABI Encoding</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Reentering-the-Propose-Function"><span class="toc-text">Reentering the Propose Function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reentering-the-SetStage-Function"><span class="toc-text">Reentering the SetStage Function</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Winning-the-Most-Votes"><span class="toc-text">Winning the Most Votes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Summary-of-the-Exploit"><span class="toc-text">Summary of the Exploit</span></a></li></ol></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Challenge"><span class="toc-text">Challenge</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution"><span class="toc-text">Solution</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Detailed-Write-up"><span class="toc-text">Detailed Write-up</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Overview-of-the-Game-Contract"><span class="toc-text">Overview of the Game Contract</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Abusing-the-Custom-Fallback"><span class="toc-text">Abusing the Custom Fallback</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Dealing-with-ABI-Encoding"><span class="toc-text">Dealing with ABI Encoding</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Reentering-the-Propose-Function"><span class="toc-text">Reentering the Propose Function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Reentering-the-SetStage-Function"><span class="toc-text">Reentering the SetStage Function</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Winning-the-Most-Votes"><span class="toc-text">Winning the Most Votes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Summary-of-the-Exploit"><span class="toc-text">Summary of the Exploit</span></a></li></ol></li></ol></li></ol>
     </div>
   </div><div class="post-content"><h1 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h1><p>For Balsn CTF 2020 online, I also created two smart-contract challenges, <code>Election</code> and <code>IdleGame</code>. The source files of them are available on <a target="_blank" rel="noopener" href="https://github.com/x9453/my-ctf-challenges">GitHub - x9453/my-ctf-challenges</a>. Here is a walkthrough of the challenge <code>Election</code>.</p>
+<blockquote>
+<p>Balsn is holding the first Shaman King election. Who will be the winner?</p>
+</blockquote>
 <ul>
 <li>Type: Smart contract</li>
 <li>Solves: 5/490</li>
 <li>Keywords: ERC223, Reentrancy, ABI encoding, Integer overflow</li>
 </ul>
-<h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><blockquote>
-<p>Balsn is holding the first Shaman King election. Who will be the winner?</p>
-</blockquote>
 <a id="more"></a>
 
 <h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>In this challenge, our goal is to win the election. By exploiting the <code>customFallback</code> parameter of the <code>_transfer</code> function of the extended ERC223 interface, we can reenter the <code>Election</code> contract with the <code>auth</code> modifier check bypassed to call the functions <code>propose</code> and <code>_setStage</code> (with some restrictions on the ABI encoding format). After proposing ourselves as a candidate, exploit the integer overflow in the <code>reveal</code> function when counting the total of votes to become the winner of the election.</p>
@@ -154,7 +154,7 @@
         <span class="prev-text nav-mobile">Prev</span>
       </a>
     <a class="next" href="/2020/01/26/Real-World-CTF-Finals-2019/">
-        <span class="next-text nav-default">Real World CTF Finals 2019 Write-up</span>
+        <span class="next-text nav-default">Real World CTF Finals 2019</span>
         <span class="prev-text nav-mobile">Next</span>
         <i class="iconfont icon-right"></i>
       </a>

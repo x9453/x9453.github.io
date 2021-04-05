@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="description" content="Paradigm CTF 2021 - Rever"/><meta name="keywords" content="ctf, smart contract, shw's Blog" /><link rel="alternate" href="/default" title="shw's Blog" ><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.11.0" />
+<link rel="canonical" href="https://x9453.github.io/2021/04/05/Paradigm-CTF-2021-Rever/"/>
+
+<link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css" /><script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.11.0" />
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":"","latex":true};
+</script>
+
+    <title>Paradigm CTF 2021 - Rever - shw's Blog</title>
+  <meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">shw's Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list"><a href="/">
+        <li class="mobile-menu-item">Home
+          </li>
+      </a><a href="/archives/">
+        <li class="mobile-menu-item">Archives
+          </li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags
+          </li>
+      </a></ul>
+</nav>
+<div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">shw's Blog</a>
+</div>
+
+<nav class="site-navbar"><ul id="menu" class="menu"><li class="menu-item">
+          <a class="menu-item-link" href="/">
+            Home
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            Archives
+            </a>
+        </li>
+      <li class="menu-item">
+          <a class="menu-item-link" href="/tags/">
+            Tags
+            </a>
+        </li>
+      </ul></nav>
+</header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content"><article class="post">
+    <header class="post-header">
+      <h1 class="post-title">Paradigm CTF 2021 - Rever
+        </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2021-04-05
+        </span></div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">Contents</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Challenge"><span class="toc-text">Challenge</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Solution"><span class="toc-text">Solution</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Overview-of-the-Challenge"><span class="toc-text">Overview of the Challenge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-First-Step"><span class="toc-text">The First Step</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optimizing-the-Solution"><span class="toc-text">Optimizing the Solution</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Golfing-in-EVM-Bytecode"><span class="toc-text">Golfing in EVM Bytecode</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Misc"><span class="toc-text">Misc</span></a></li></ol>
+    </div>
+  </div><div class="post-content"><p>In Feb. this year, I and some other Balsn members participated in <a target="_blank" rel="noopener" href="https://ctf.paradigm.xyz/">Paradigm CTF</a>, an Ethereum-focused security competition held by <a target="_blank" rel="noopener" href="https://twitter.com/paradigm">Paradigm</a>. First of all, thanks to the organizers for preparing such high-quality and impressive challenges! Luckily, our team, <code>whoami</code>, got fourth place with 11 out of 17 challenges solved.</p>
+<center>
+  <img src="/images/pctf-solve.png" width="70%">
+  <p>List of members and solved challenges</p>
+</center>
+
+<p>When browsing the <a target="_blank" rel="noopener" href="https://github.com/paradigm-operations/paradigm-ctf-2021">official repository</a>, I noticed a clever trick used in a coding challenge, <code>REVER</code>, and wondered whether I could improve the solution furthermore. Here, I will share the optimal solution I can develop and some tips for EVM bytecode golfing.</p>
+<a id="more"></a>
+
+<h1 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h1><blockquote>
+<p>Writing contracts that can only be used in one direction is so last year.</p>
+</blockquote>
+<ul>
+<li>Type: Smart contract</li>
+<li>Solves: 5/67</li>
+<li>Keywords: Yul, EVM opcode, EVM bytecode, code golfing</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/paradigm-operations/paradigm-ctf-2021/tree/master/rever/public">Source files</a></li>
+</ul>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><h2 id="Overview-of-the-Challenge"><a href="#Overview-of-the-Challenge" class="headerlink" title="Overview of the Challenge"></a>Overview of the Challenge</h2><p>The goal of this challenge is to write a contract (i.e., a sequence of EVM bytecodes) that can <a target="_blank" rel="noopener" href="https://github.com/paradigm-operations/paradigm-ctf-2021/blob/master/rever/public/contracts/Setup.sol#L70-L83">identify</a> palindromes. Even more complicated, our written contract should work as well when executed in the reverse direction (somehow inspired by the movie <code>TENET</code>).</p>
+<p>Both original and reversed versions of our contract are deployed after passing <a target="_blank" rel="noopener" href="https://github.com/paradigm-operations/paradigm-ctf-2021/blob/master/rever/public/contracts/Setup.sol#L47-L48">checks</a> on the length and the included opcodes. When we request a flag, the backend judges the two contracts with fixed and randomly generated <a target="_blank" rel="noopener" href="https://github.com/paradigm-operations/paradigm-ctf-2021/blob/master/rever/public/deploy/chal.py#L10-L42">test cases</a>. Our contract should answer all test cases correctly to get a flag.</p>
+<h2 id="The-First-Step"><a href="#The-First-Step" class="headerlink" title="The First Step"></a>The First Step</h2><p>By a careful inspection, we may realize that this challenge is a <strong>real</strong> coding challenge since the possible ways to call external contracts are forbidden. Besides, our contract’s length is limited to a maximum of 100 bytes.</p>
+<p>How can we make our contract valid when executed in the reverse direction? A simple way is to palindrome it (i.e., <code>s&#39; = s[:-1] + s[::-1]</code>). As a result, only half of our contract is executed in both directions. From now on, we only need to focus only on the first half of our contract, whose length is at most 50 bytes long.</p>
+<p>First, let’s take a look at the <a target="_blank" rel="noopener" href="https://github.com/paradigm-operations/paradigm-ctf-2021/blob/master/rever/private/impl.yul">official solution</a>, which is the compiled bytecode (with the last 3 bytes discarded) from the following code written in <a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/v0.8.3/yul.html">Yul</a>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;           </span><br><span class="line">    <span class="keyword">let</span> i := returndatasize()</span><br><span class="line">    <span class="keyword">let</span> m := shr(selfbalance(), calldatasize())</span><br><span class="line">    <span class="keyword">let</span> e := sub(calldatasize(), selfbalance())</span><br><span class="line">    <span class="keyword">for</span> &#123;&#125; and(</span><br><span class="line">        eq(shr(<span class="number">248</span>, calldataload(i)), shr(<span class="number">248</span>, calldataload(sub(e, i)))),</span><br><span class="line">        lt(i, m)</span><br><span class="line">    ) &#123;<span class="attr">i</span> := add(i, selfbalance())&#125; &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    mstore(callvalue(), eq(i, m))</span><br><span class="line">    <span class="keyword">return</span>(callvalue(), <span class="number">0x20</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This code implements a straight-forward byte-by-byte comparison algorithm. Notice that after deploying the two contracts, <code>1 wei</code> is <a target="_blank" rel="noopener" href="https://github.com/paradigm-operations/paradigm-ctf-2021/blob/master/rever/private/Exploit.sol#L8-L9">transferred</a> to both of them to let the return value of <code>selfbalance()</code> become 1. As for <code>callvalue()</code> and <code>returndatasize()</code>, they are always 0 afterwards.</p>
+<h2 id="Optimizing-the-Solution"><a href="#Optimizing-the-Solution" class="headerlink" title="Optimizing the Solution"></a>Optimizing the Solution</h2><p>Although the above implementation is good enough to solve this challenge, one may find space to improve by inspecting the EVM bytecode directly (e.g., redundant opcodes, stack elements re-arrangement). Let me show you the optimal solution I can figure out, which is 24 bytes long:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">pc    instruction       stack (top -&gt; bottom)</span><br><span class="line">----  --------------    ----------------------------------</span><br><span class="line">0000  CALLDATASIZE      [size]</span><br><span class="line">0001  RETURNDATASIZE    [0 size]</span><br><span class="line"></span><br><span class="line">0002  JUMPDEST          [i size]</span><br><span class="line">0003  DUP1              [i i size]</span><br><span class="line">0004  SELFBALANCE       [1 i i size]</span><br><span class="line">0005  ADD               [i+1 i size]</span><br><span class="line">0006  SWAP1             [i i+1 size]</span><br><span class="line"></span><br><span class="line">0007  CALLDATALOAD      [data[i] i+1 size]</span><br><span class="line">0008  DUP2              [i+1 data[i] i+1 size]</span><br><span class="line">0009  DUP4              [size i+1 data[i] i+1 size]</span><br><span class="line">000A  SUB               [size-i-1 data[i] i+1 size]</span><br><span class="line">000B  CALLDATALOAD      [data[size-i-1] data[i] i+1 size]</span><br><span class="line">000C  XOR               [xor i+1 size]</span><br><span class="line">000D  RETURNDATASIZE    [0 xor i+1 size]</span><br><span class="line">000E  BYTE              [byte i+1 size]</span><br><span class="line">000F  RETURNDATASIZE    [0 byte i+1 size]</span><br><span class="line">0010  JUMPI             [i+1 size]</span><br><span class="line"></span><br><span class="line">0011  DUP2              [size i+1 size]</span><br><span class="line">0012  DUP2              [i+1 size i+1 size]</span><br><span class="line">0013  LT                [i+1&lt;size i+1 size]</span><br><span class="line">0014  PUSH1 0x02        [0x02 cont i+1 size]</span><br><span class="line">0016  JUMPI             [i+1 size]</span><br><span class="line">0017  STOP              [i+1 size]</span><br></pre></td></tr></table></figure>
+<p>This piece of bytecode consists of 4 parts:</p>
+<ol>
+<li>Initialize <code>i</code> and <code>size</code>.</li>
+<li>Increase <code>i</code> at the beginning of each loop.</li>
+<li>Compare <code>s[i]</code> and <code>s[size-1-i]</code>. If they are the same, continue. If not, jump to offset 0 to revert the transaction.</li>
+<li>Jump to the beginning of the loop if <code>i+1&lt;size</code>; otherwise, stop the execution.</li>
+</ol>
+<p>For reference, below is the pseudocode with the same behavior as the bytecode.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> size := calldatasize()</span><br><span class="line">    <span class="keyword">let</span> i := returndatasize()</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> j := add(i, selfbalance())</span><br><span class="line">        <span class="keyword">if</span> byte(</span><br><span class="line">            returndatasize(),</span><br><span class="line">            xor(calldataload(i), calldataload(sub(size, j)))</span><br><span class="line">        ) &#123; jump(returndatasize()) &#125;</span><br><span class="line">        i := j</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> lt(j, size)</span><br><span class="line">    stop()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Same as the official solution, we should transfer <code>1 wei</code> to both of the contracts after deploying them. Now, let me explain the tips I used to construct this solution.</p>
+<h2 id="Golfing-in-EVM-Bytecode"><a href="#Golfing-in-EVM-Bytecode" class="headerlink" title="Golfing in EVM Bytecode"></a>Golfing in EVM Bytecode</h2><p><strong>Tip #1: Replace constants with environmental and block variables</strong></p>
+<p>This trick is applied to optimize the use of constants 0 and 1 in the official solution. As shown above, <code>returndatasize()</code> and <code>callvalue()</code> replace the constant 0, while <code>selfbalance()</code> replace the constant 1. By this method, the use of 0 and 1 reaches the optimal of 1 byte for each use.</p>
+<p>The reason for choosing <code>returndatasize()</code> and <code>selfbalance()</code> to replace the constants is that the former is always 0 (before any function calls), and the latter is usually controllable by us. Remember that the balance scale is calculated in <code>wei</code>. Other variables such as <code>chainid()</code> or <code>number()</code> might also be exploited but are less useful in general.</p>
+<p><strong>Tip #2: Push once, duplicate multiple times</strong></p>
+<p>For other frequently-used constants that cannot be presented by an environmental or block variable, push them onto the stack (e.g., <code>PUSH2 0x9453</code>) then duplicate them (e.g., <code>DUP1</code>) whenever using them to save (at least) 1 byte for every additional use.</p>
+<p><strong>Tip #3: Take advantage of special opcodes</strong></p>
+<p>Use powerful opcodes such as <code>ADDMOD</code>, <code>MULMOD</code>, <code>BYTE</code> to simplify arithmetic operations. For example, to get the first byte of <code>x</code>, use <code>byte(0, x)</code> instead of <code>shr(248, x)</code> to save 1 byte. If there is no need to change the input data, consider pushing it onto the stack by <code>calldataload</code> instead of <code>calldatacopy</code> to the memory and then <code>mload</code> to the stack.</p>
+<p><strong>Tip #4: Avoid POP by reusing the old copy of variables</strong></p>
+<p>We choose to increase <code>i</code> by one (part 2) <strong>before</strong> indexing the input data (part 3) to avoid wasting the old copy. In normal cases, the compiler tends to pop out the old copy of a variable after updating it:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0010  DUP1              [i i size]</span><br><span class="line">0011  CALLDATALOAD      [data[i] i size]</span><br><span class="line">...</span><br><span class="line">0020  DUP1              [i i size]</span><br><span class="line">0021  SELFBALANCE       [1 i i size]</span><br><span class="line">0022  ADD               [i+1 i size]</span><br><span class="line">0023  SWAP1             [i i+1 size]</span><br><span class="line">0024  POP               [i+1 size]</span><br></pre></td></tr></table></figure>
+<p>However, making use of the old copy would let us save a <code>POP</code> and a <code>DUP</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0010  DUP1              [i i size]</span><br><span class="line">0011  SELFBALANCE       [1 i i size]</span><br><span class="line">0012  ADD               [i+1 i size]</span><br><span class="line">0013  SWAP1             [i i+1 size]</span><br><span class="line">0014  CALLDATALOAD      [data[i] i+1 size]</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p><strong>Tip #5: Exploit execution error to revert the transaction</strong></p>
+<p>Instead of explicitly using the <code>REVERT</code> opcode, an execution error in EVM has the same effect of reverting without any data returned. The most common way is by the byte <code>fe</code>, also called the <code>INVALID</code> instruction, which is only 1 byte long. If you want to revert based on a particular condition, use <code>JUMPI</code> to jump to an offset that is not a <code>JUMPDEST</code> to revert. See the 3rd part of the above bytecode as an example.</p>
+<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><p>Actually, I didn’t come up with the above solution during the competition. I used a more complicated way to calculate the numerical difference between the first and second half of the input string, which even has a certain chance of failure.</p>
+<p>By the way, there seems to be an easy unintended solution: return a hard-coded answer for the five fixed test cases (determined by the length of the input string), and guess for the randomly generated ones. The probability of success is to be <code>2^-10</code>, which is feasible to brute-force until success within only hours.</p>
+
+      </div>
+      <div class="post-copyright">
+    <p class="copyright-item">
+      <span>Author: </span>
+      <a href="https://x9453.github.io">shw</a>
+    </p>
+    <p class="copyright-item">
+      <span>Link: </span>
+      <a href="https://x9453.github.io/2021/04/05/Paradigm-CTF-2021-Rever/">https://x9453.github.io/2021/04/05/Paradigm-CTF-2021-Rever/</a>
+    </p>
+    <p class="copyright-item">
+      <span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a>
+    </p>
+  </div>
+      <footer class="post-footer">
+        <div class="post-tags">
+            <a href="/tags/ctf/">ctf</a>
+            <a href="/tags/smart-contract/">smart contract</a>
+            </div>
+        
+        <nav class="post-nav"><a class="next" href="/2021/03/12/Balsn-CTF-2020-IdleGame/">
+        <span class="next-text nav-default">Balsn CTF 2020 - IdleGame</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    </nav></footer>
+    </article></div><div class="comments" id="comments"></div></div>
+      </main>
+
+      <footer id="footer" class="footer"><div class="social-links"><a href="mailto:shw.ctf@gmail.com" class="iconfont icon-email" title="email"></a>
+        <a target="_blank" rel="noopener" href="https://github.com/x9453" class="iconfont icon-github" title="github"></a>
+        <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    </div><div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">&copy;2020 - 2021<span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">shw</span>
+  </span>
+</div>
+</footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div><script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/src/even.js?v=2.11.0"></script>
+</body>
+</html>
